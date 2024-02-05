@@ -1,0 +1,117 @@
+--PROCEDURE DE INSERT PARA TABELA CLIENTE
+CREATE OR ALTER PROCEDURE SP_INSERT_CLIENTE(
+	@Nome			VARCHAR(100),
+	@DataNascimento	Date,
+	@CPF			Bigint,
+	@Email			varchar(255),
+	@Telefone		Bigint
+)
+As
+/*
+DOCUMENTAÇÃO
+ARQUIVO FONTE.....: SP_INSERT_CLIENTE.SQL
+OBJETIVO..........: INSERIR UM NOVO CLIENTE
+AUTOR.............: ERICK ALVES
+DATA..............: 05/02/2024
+EX................: DECLARE @RESULTADO INT
+					EXEC @RESULTADO = [dbo].[SP_INSERT_CLIENTE] @CPF, @Nome, @DataNascimento, @Email, @Telefone
+					SELECT @RESULTADO AS RESULTADO
+RETORNO...........: 0 - OK
+					1 - CLIENTE EXISTENTE
+					2 - CPF INVALIDO
+*/
+	BEGIN
+		--VALIDANDO CPF 
+		IF EXISTS( SELECT TOP 1 @CPF FROM CLIENTE WHERE CPF = @CPF) RETURN 1
+
+		--VERIFICANDO SE O CPF É VALIDO
+		IF (SELECT [dbo].[FNC_ValidarCPF] (@CPF)) = 0 RETURN 2
+
+		--INSERINDO DADOS NA TABELA CLIENTE
+		INSERT INTO CLIENTE (CPF, Nome, DataNascimento, Email, Telefone)
+			VALUES	(@CPF, @Nome, @DataNascimento, @Email, @Telefone)
+
+		RETURN 0
+	END
+GO
+
+--PROCEDURE DE INSERT PARA TABELA FUNCIONARIO
+CREATE PROCEDURE SP_INSERT_FUNCIONARIO(
+	@Id_Cargo		INT,
+	@Nome			VARCHAR(50),
+	@DataNascimento	Date,
+	@CPF			Bigint,
+	@Salario		money
+)
+As
+/*
+DOCUMENTAÇÃO
+ARQUIVO FONTE.....: SP_INSERT_FUNCIONARIO.SQL
+OBJETIVO..........: INSERIR UM NOVO FUNCIONARIO
+AUTOR.............: ERICK ALVES
+DATA..............: 05/02/2024
+EX................: DECLARE @RESULTADO INT
+					EXEC @RESULTADO = [dbo].[SP_INSERT_FUNCIONARIO] @ID_Cargo, @Nome, @DataNascimento, @CPF, @Salario
+					SELECT @RESULTADO AS RESULTADO
+RETORNO...........: 0 - OK
+					1 - CARGO INEXISTENTE
+					2 - CPF EXISTENTE
+
+*/
+	BEGIN
+		--VALIDANDO CPF 
+		IF NOT EXISTS( SELECT TOP 1 @Id_Cargo FROM FUNCIONARIO WHERE IDCargo = @Id_Cargo) RETURN 1
+
+		--VERIFICAR SE O EMAIL EXISTE
+		IF EXISTS( SELECT TOP 1 @CPF FROM FUNCIONARIO WHERE CPF = @CPF) RETURN 2
+
+		--INSERINDO DADOS NA TABELA PRODUTO
+		INSERT INTO FUNCIONARIO (IDCargo, Nome, DataNascimento, CPF, Salario)
+			VALUES	(@Id_Cargo, @Nome, @DataNascimento, @CPF, @Salario)
+
+		RETURN 0
+	END
+GO
+
+--PROCEDURE DE INSERT PARA TABELA COMPRA
+CREATE PROCEDURE SP_INSERT_COMPRA(
+	@Id_Funcionario		INT,
+	@Id_Cliente			INT,
+	@Id_Produto			INT,
+	@DataCompra			date,
+	@Quantidade			int,
+	@ValorTotal			money
+)
+As
+/*
+DOCUMENTAÇÃO
+ARQUIVO FONTE.....: SP_INSERT_COMPRA.SQL
+OBJETIVO..........: INSERIR UMA NOVA COMPRA
+AUTOR.............: ERICK ALVES
+DATA..............: 05/02/2024
+EX................: DECLARE @RESULTADO INT
+					EXEC @RESULTADO = [dbo].[SP_INSERT_COMPRA] @Id_Funcionario, @Id_Cliente, @Id_Produto, @DataCompra, @Quantidade, @ValorTotal
+					SELECT @RESULTADO AS RESULTADO
+RETORNO...........: 0 - OK
+					1 - FUNCIONARIO INEXISTENTE
+					2 - CLIENTE INEXISTENTE
+					3 - PRODUTO INEXISTENTE
+
+*/
+	BEGIN
+		--VERIFICANDO O ID DO CLIENTE
+		IF NOT EXISTS( SELECT TOP 1 @Id_Funcionario FROM Compra WHERE IdFuncionario = @Id_Funcionario) RETURN 1
+
+		--VERIFICANDO O ID DO CLIENTE
+		IF NOT EXISTS( SELECT TOP 1 @Id_Cliente FROM Compra WHERE IdCliente = @Id_Cliente) RETURN 2
+
+		--VERIFICANDO O ID DO CLIENTE
+		IF NOT EXISTS( SELECT TOP 1 @Id_Produto FROM Compra WHERE IdProduto = @Id_Produto) RETURN 3
+
+		--INSERINDO DADOS NA TABELA PRODUTO
+		INSERT INTO Compra (IdFuncionario, IdCliente, IdProduto, DataCompra, Quantidade, ValorTotal)
+			VALUES	(@Id_Funcionario, @Id_Cliente, @Id_Produto, @DataCompra, @Quantidade, @ValorTotal)
+
+		RETURN 0
+	END
+GO
