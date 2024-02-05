@@ -23,3 +23,4 @@ EX................: EXEC [dbo].[TRG_ATUALIZAR_ESTOQUE]
 		WHERE ID = @Id_Produto
 	END
 GO
+
