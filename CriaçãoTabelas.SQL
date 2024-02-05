@@ -1,6 +1,6 @@
 USE smningatreinamentogrupo1
 
--- Cria��o da tabela Cliente
+-- Criação da tabela Cliente
 CREATE TABLE Cliente (
 	ID INT PRIMARY KEY IDENTITY,
 	Nome VARCHAR (100) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE Cliente (
 	Telefone BIGINT NOT NULL
 	)
 
--- Cria��o da tabela Produto
+-- Criação da tabela Produto
 CREATE TABLE Produto (
 	ID SMALLINT PRIMARY KEY IDENTITY,
 	Nome VARCHAR (50) NOT NULL,
@@ -19,14 +19,14 @@ CREATE TABLE Produto (
 	QuantidadeEmEstoque SMALLINT NOT NULL
 	)
 
--- Cria��o da tabela Cargo
+-- Criação da tabela Cargo
 CREATE TABLE Cargo (
 	ID SMALLINT PRIMARY KEY IDENTITY,
 	Nome VARCHAR (50) NOT NULL,
 	ValorSalarial MONEY NOT NULL
 	)
 
--- Cria��o da tabela Funcionario
+-- Criação da tabela Funcionario
 CREATE TABLE Funcionario (
 	ID INT PRIMARY KEY IDENTITY,
 	IdCargo SMALLINT NOT NULL,
