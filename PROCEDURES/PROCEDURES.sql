@@ -1,3 +1,7 @@
+-----------------
+	ERICK
+-----------------
+
 --PROCEDURE DE INSERT PARA TABELA CLIENTE
 CREATE OR ALTER PROCEDURE SP_INSERT_CLIENTE(
 	@Nome			VARCHAR(100),
@@ -115,3 +119,5 @@ RETORNO...........: 0 - OK
 		RETURN 0
 	END
 GO
+
+
